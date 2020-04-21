@@ -15,26 +15,22 @@ public class InOutCheck {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
 
         Pattern pattern = Pattern.compile("[\\D&&[^-*/+. ]]");//a-zA-Zа-яА-я
         Matcher matcher = pattern.matcher(expression);
         if(matcher.find()) {
             System.out.println("Некорректное выражение");
-            return null;
+            throw new IllegalArgumentException();
+
         }
-        Pattern doublePat = Pattern.compile("[-*/+. ]{2,}");
+        Pattern doublePat = Pattern.compile("[-*/+.]{2,}");
         Matcher matcher1 = doublePat.matcher(expression);
         if(matcher1.find()) {
             System.out.println("Некорректное выражение");
-            return null;
+            throw new IllegalArgumentException();
         }
+
         return expression;
     }
 }

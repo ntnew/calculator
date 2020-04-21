@@ -22,15 +22,23 @@ public class Calc {
                 }
                 else if (s.equals("/")) {
                     Double b = stack.pop(), a = stack.pop();
-                    stack.push(a / b);
+                    if (b==0) {
+                        System.out.println("Деление на ноль");
+                        throw new IllegalArgumentException();
+                    }
+                    else stack.push(a / b);
                 }
                 else stack.push(Double.valueOf(s));
             }
+            return stack.pop();
         }
+      /*  catch (NumberFormatException e){
+            System.out.println("Некорректное выражение2");
+        }*/
         catch (NoSuchElementException e){
-            System.out.println("Некорректное выражение");
-            System.exit(0);
+            System.out.println("Некорректное выражение1");
         }
+
         return stack.pop();
     }
 }
