@@ -4,17 +4,20 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import java.io.*;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-{
-    /**
-     * Rigorous Test :-)
-     */
-    @Test
-    public void shouldAnswerWithTrue()
+public class AppTest {
+    @Test(expected = IllegalArgumentException.class)
+    public void testInput1()
     {
-        assertTrue( true );
+        String[] args = null;
+        ByteArrayInputStream in = new ByteArrayInputStream("2+2*2-".getBytes());
+        System.setIn(in);
+        App.main(args);
     }
 }

@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 class Parser {
     private static String operators = "+-*/ ";
-    public static boolean flag = true;
 
     private static boolean isOperator(String token) {
          for (int i = 0; i < operators.length(); i++) {
@@ -22,39 +21,33 @@ class Parser {
     public static List<String> parse(String expression) {
         List<String> list = new ArrayList<String>();
         Deque<String> stack = new ArrayDeque<String>();
-        try {
-            StringTokenizer tokenizer = new StringTokenizer(expression, operators, true);
 
-            String curr = "";
+        StringTokenizer tokenizer = new StringTokenizer(expression, operators, true);
 
-            while (tokenizer.hasMoreTokens()) {
-                curr = tokenizer.nextToken();
-                if (!tokenizer.hasMoreTokens() && isOperator(curr)) {
-                    System.out.println("Некорректное выражение.");
-                    flag = false;
-                    return list;
-                }
-                if (curr.equals(" ")) continue;
-                else if (isOperator(curr)) {
-                        while (!stack.isEmpty() && (priority(curr) <= priority(stack.peek()))) {
-                            list.add(stack.pop());
-                        }
-                    stack.push(curr);
-                }
-                else {
-                list.add(curr);
-                }
+        String curr = "";
 
+        while (tokenizer.hasMoreTokens()) {
+            curr = tokenizer.nextToken();
+            if (!tokenizer.hasMoreTokens() && isOperator(curr)) {
+                    System.out.println("Ошибка в выражении");
+                    throw new IllegalArgumentException();
             }
-        }catch (NullPointerException e){
-            System.out.println("Два операнда подряд");
-            System.exit(0);
+            if (curr.equals(" ")) continue;
+            else if (isOperator(curr)) {
+                while (!stack.isEmpty() && (priority(curr) <= priority(stack.peek()))) {
+                    list.add(stack.pop());
+                }
+                stack.push(curr);
+            }
+            else {
+                list.add(curr);
+            }
+
         }
 
-       while (!stack.isEmpty()) {
+        while (!stack.isEmpty()) {
             if (isOperator(stack.peek())) list.add(stack.pop());
             else {
-                flag = false;
                 return list;
             }
         }
